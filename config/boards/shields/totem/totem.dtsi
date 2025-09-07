@@ -32,8 +32,6 @@
     kscan0: kscan_0 {
         compatible = "zmk,kscan-gpio-matrix";
         label = "KSCAN";
-				wakeup-source;
-        
         diode-direction = "col2row"; 
         row-gpios
             = <&xiao_d 0 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
@@ -43,8 +41,17 @@
             ;
     };
 
-		soft_off_wakeup_sources: soft_off_wakeup_sources {
-        compatible = "zmk,soft-off-wakeup-sources";
-        wakeup-sources = <&kscan0>;
+		wakeup_key: wakeup_key {
+        compatible = "zmk,gpio-key-wakeup-trigger";
+        trigger = <&gpio_key>;
+        wakeup-source;
+        extra-gpios = <&xiao_d 4 GPIO_ACTIVE_HIGH>;
+    };
+
+    gpio_key: gpio_key {
+        compatible = "gpio-keys";
+        wakeup_button: wakeup_button {
+            gpios = <&xiao_d 0 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>; // First row pin
+        };
     };
 };
